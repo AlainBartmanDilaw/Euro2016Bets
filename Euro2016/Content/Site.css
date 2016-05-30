@@ -303,6 +303,11 @@ ol.round {
             background: url("../Images/orderedList9.png") no-repeat;
         }
 
+        ol.round li.match
+        {
+            color: chocolate;
+        }
+
 /* content */
 article {
     float: left;
@@ -754,4 +759,32 @@ tr.pager td {
         footer p {
             margin: 0;
         }
+}
+
+Date, Lieu, Team, Score
+{
+    text-align:center;
+    width: 1000px;
+    color: black; 
+    font-size: 1.2em;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+Date
+{
+    text-align=left;
+}
+
+Score
+{
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+Lieu
+{
+    text-align:left;
+    padding-left: 30px;
+    column-width:30px;
 }
