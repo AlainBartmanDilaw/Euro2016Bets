@@ -770,8 +770,7 @@ td.Date, td.Lieu, td.Team
 , td.TeamAway
 {
     text-align:center;
-    width: 1000px;
-    color: blue; 
+    color: #5f5757; 
     font-family:'Baskerville Old Face';
     font-size: 1.2em;
     padding-left: 15px;

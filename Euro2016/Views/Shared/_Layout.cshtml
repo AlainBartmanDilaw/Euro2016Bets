@@ -14,9 +14,6 @@
             <div class="content-wrapper ">
                 <div class="float-left">
                     <p class="site-title">
-                        <!-- @Html.ActionLink("Votre logo ici", "Index", "Home")-->
-                        <!-- img src="~/Images/UEFA_Euro_2016_logo.png" /-->
-                        <!-- @Html.ActionLink("Logo", "Index", null, new { @style = "background-image:url('~/Images/UEFA_Euro_2016_logo.png')" }) -->
                         @using Euro2016.Helpers;
                         @Html.ImageActionLink("Link Display Text", "Index","Home",null,null,"~/Images/UEFA_Euro_2016_logo.png")
                     </p>
@@ -27,8 +24,8 @@
                     </section>
                     <nav>
                         <ul id="menu">
-                            <li>@Html.ActionLink("Résultats", "Index", "Home")</li>
-                            <li>@Html.ActionLink("Vos Paris", "Bets", "Home")</li>
+                            <li>@Html.ActionLink("Résultats & Paris", "Index", "Home")</li>
+                            <li>@Html.ActionLink("Classements", "Bets", "Home")</li>
                             <li>@Html.ActionLink("À propos de", "About", "Home")</li>
                             <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                         </ul>
