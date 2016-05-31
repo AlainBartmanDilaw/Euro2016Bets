@@ -304,9 +304,11 @@ ol.round {
         }
 
         ol.round li.match
-        {
-            color: chocolate;
-        }
+{
+    color: #FF00FF;
+    table-layout: fixed;
+    empty-cells: show;
+}
 
 /* content */
 article {
@@ -761,30 +763,53 @@ tr.pager td {
         }
 }
 
-Date, Lieu, Team, Score
+td.Date, td.Lieu, td.Team
+, td.ScoreHome
+, td.ScoreAway
+, td.TeamHome
+, td.TeamAway
 {
     text-align:center;
     width: 1000px;
-    color: black; 
+    color: blue; 
+    font-family:'Baskerville Old Face';
     font-size: 1.2em;
     padding-left: 15px;
     padding-right: 15px;
 }
 
-Date
+td.TeamHome
 {
-    text-align=left;
+    text-align: right;
 }
 
-Score
+td.TeamAway
+{
+    text-align: left;
+}
+
+td.ScoreHome, td.ScoreAway
+{
+    width: 50px
+}
+
+td.Date
+{
+    text-align: left;
+    column-width: 120px;
+}
+
+td.Score
 {
     padding-left: 3px;
     padding-right: 3px;
 }
 
-Lieu
+td.Lieu
 {
-    text-align:left;
+    text-align: left;
     padding-left: 30px;
-    column-width:30px;
+    column-width: 110px;
+    background-color: #a6dbed;
 }
+
