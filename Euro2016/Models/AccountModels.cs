@@ -25,6 +25,8 @@ namespace Euro2016.Models
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int UserId { get; set; }
         public string UserName { get; set; }
+        public string EmailId { get; set; }
+        public string Details { get; set; }
     }
 
     public class RegisterExternalLoginModel
@@ -68,6 +70,7 @@ namespace Euro2016.Models
 
         [Display(Name = "Mémoriser le mot de passe ?")]
         public bool RememberMe { get; set; }
+
     }
 
     public class RegisterModel
@@ -86,6 +89,14 @@ namespace Euro2016.Models
         [Display(Name = "Confirmer le mot de passe ")]
         [Compare("Password", ErrorMessage = "Le mot de passe et le mot de passe de confirmation ne correspondent pas.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [Display(Name = "Adresse Mail")]
+        public string EmailId { get; set; }
+
+        [Required]
+        [Display(Name = "Descriptions")]
+        public string Details { get; set; }
     }
 
     public class ExternalLogin
@@ -94,4 +105,5 @@ namespace Euro2016.Models
         public string ProviderDisplayName { get; set; }
         public string ProviderUserId { get; set; }
     }
+
 }

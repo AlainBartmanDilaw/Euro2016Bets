@@ -10,6 +10,7 @@ using Microsoft.Web.WebPages.OAuth;
 using WebMatrix.WebData;
 using Euro2016.Filters;
 using Euro2016.Models;
+using System.Net.Mail;
 
 namespace Euro2016.Controllers
 {
@@ -79,7 +80,7 @@ namespace Euro2016.Controllers
                 // Tentative d'inscription de l'utilisateur
                 try
                 {
-                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
+                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password, new { EmailId = model.EmailId, Details = model.Details });
                     WebSecurity.Login(model.UserName, model.Password);
                     return RedirectToAction("Index", "Home");
                 }
@@ -91,6 +92,76 @@ namespace Euro2016.Controllers
 
             // Si nous sommes arrivés là, quelque chose a échoué, réafficher le formulaire
             return View(model);
+        }
+
+        [AllowAnonymous]
+        public ActionResult ForgotPasswordView()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult ForgotPasswordView(string UserName)
+        {
+            //check user existance
+            var user = Membership.GetUser(UserName);
+            if (user == null)
+            {
+                TempData["Message"] = "User Not exist.";
+            }
+            else
+            {
+                //generate password token
+                var token = WebSecurity.GeneratePasswordResetToken(UserName);
+                //create url with above token
+                var resetLink = "<a href='" + Url.Action("ResetPassword", "Account", new { un = UserName, rt = token }, "http") + "'>Reset Password</a>";
+                //get user emailid
+                UsersContext db = new UsersContext();
+                var emailid = (from i in db.UserProfiles
+                               where i.UserName == UserName
+                               select i.EmailId).FirstOrDefault();
+                //send mail
+                string subject = "Password Reset Token";
+                string body = "<b>Please find the Password Reset Token</b><br/>" + resetLink; //edit it
+                try
+                {
+                    SendEMail(emailid, subject, body);
+                    TempData["Message"] = "Mail Sent.";
+                }
+                catch (Exception ex)
+                {
+                    TempData["Message"] = "Error occured while sending email." + ex.Message;
+                }
+                //only for testing
+                TempData["Message"] = resetLink;
+            }
+
+            return View();
+        }
+
+        private void SendEMail(string emailid, string subject, string body)
+        {
+            SmtpClient client = new SmtpClient();
+            client.DeliveryMethod = SmtpDeliveryMethod.Network;
+            client.EnableSsl = true;
+            client.Host = "smtp.gmail.com";
+            client.Port = 587;
+
+            System.Net.NetworkCredential credentials = new System.Net.NetworkCredential("Euro2016Bets@gmail.com", "Euro2016Bets");
+            client.UseDefaultCredentials = false;
+            client.Credentials = credentials;
+
+            MailMessage msg = new MailMessage();
+            msg.From = new MailAddress("Euro2016Bets@gmail.com");
+            msg.To.Add(new MailAddress(emailid));
+
+            msg.Subject = subject;
+            msg.IsBodyHtml = true;
+            msg.Body = body;
+
+            client.Send(msg);
         }
 
         //
