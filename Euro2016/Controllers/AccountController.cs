@@ -95,7 +95,7 @@ namespace Euro2016.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult ForgotPasswordView()
+        public ActionResult ForgotPassword()
         {
             return View();
         }
@@ -103,13 +103,13 @@ namespace Euro2016.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult ForgotPasswordView(string UserName)
+        public ActionResult ForgotPassword(string UserName)
         {
             //check user existance
             var user = Membership.GetUser(UserName);
             if (user == null)
             {
-                TempData["Message"] = "User Not exist.";
+                TempData["Message"] = "Cet utilisateur n'existe pas...";
             }
             else
             {
@@ -134,8 +134,8 @@ namespace Euro2016.Controllers
                 {
                     TempData["Message"] = "Error occured while sending email." + ex.Message;
                 }
-                //only for testing
-                TempData["Message"] = resetLink;
+                // only for testing
+                // TempData["Message"] = resetLink;
             }
 
             return View();
@@ -145,16 +145,32 @@ namespace Euro2016.Controllers
         {
             SmtpClient client = new SmtpClient();
             client.DeliveryMethod = SmtpDeliveryMethod.Network;
+
             client.EnableSsl = true;
             client.Host = "smtp.gmail.com";
+            //client.Host = "aspmx.l.google.com";
+            //client.Host = "smtp.free.fr";
             client.Port = 587;
 
-            System.Net.NetworkCredential credentials = new System.Net.NetworkCredential("Euro2016Bets@gmail.com", "Euro2016Bets");
+            //client.EnableSsl = false;
+            //client.Port = 25;
+            //client.Host = "gmail-smtp-in-v4v6.l.google.com";
+            //client.Host = "aspmx.l.google.com";
+
+            const String from = "franceeuro2016bets@gmail.com";
+
+            // Récupération du mot de passe
+            UsersContext db = new UsersContext();
+            var password = (from i in db.Parameters
+                           where i.Name == "Password"
+                          select i.Value).First();
+
+            System.Net.NetworkCredential credentials = new System.Net.NetworkCredential(from, password);
             client.UseDefaultCredentials = false;
             client.Credentials = credentials;
 
             MailMessage msg = new MailMessage();
-            msg.From = new MailAddress("Euro2016Bets@gmail.com");
+            msg.From = new MailAddress(from);
             msg.To.Add(new MailAddress(emailid));
 
             msg.Subject = subject;
@@ -474,5 +490,74 @@ namespace Euro2016.Controllers
             }
         }
         #endregion
+
+        private string GenerateRandomPassword(int length)
+        {
+            string allowedChars = "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ023456789!@$?_-*&#+";
+            char[] chars = new char[length];
+            Random rd = new Random();
+            for (int i = 0; i < length; i++)
+            {
+                chars[i] = allowedChars[rd.Next(0, allowedChars.Length)];
+            }
+            return new string(chars);
+        }
+
+        [AllowAnonymous]
+        public ActionResult ResetPassword(string un, string rt)
+        {
+            UsersContext db = new UsersContext();
+            //TODO: Check the un and rt matching and then perform following
+            //get userid of received username
+            var userid = (from i in db.UserProfiles
+                          where i.UserName == un
+                          select i.UserId).FirstOrDefault();
+            //check userid and token matches
+            bool any = (from j in db.webpages_Membership
+                        where (j.UserId == userid)
+                        && (j.PasswordVerificationToken == rt)
+                        //&& (j.PasswordVerificationTokenExpirationDate < DateTime.Now)
+                        select j).Any();
+
+            if (any == true)
+            {
+                //generate random password
+                string newpassword = GenerateRandomPassword(16);
+                //reset password
+                bool response = WebSecurity.ResetPassword(rt, newpassword);
+                if (response == true)
+                {
+                    //get user emailid to send password
+                    var emailid = (from i in db.UserProfiles
+                                   where i.UserName == un
+                                   select i.EmailId).FirstOrDefault();
+                    //send email
+                    string subject = "New Password";
+                    string body = "<b>Please find the New Password</b><br/>" + newpassword; //edit it
+                    try
+                    {
+                        SendEMail(emailid, subject, body);
+                        TempData["Message"] = "Mail Sent.";
+                    }
+                    catch (Exception ex)
+                    {
+                        TempData["Message"] = "Error occured while sending email." + ex.Message;
+                    }
+
+                    //display message
+                    TempData["Message"] = "Success! Check email we sent. Your New Password Is " + newpassword;
+                }
+                else
+                {
+                    TempData["Message"] = "Hey, avoid random request on this page.";
+                }
+            }
+            else
+            {
+                TempData["Message"] = "Username and token not maching.";
+            }
+
+            return View();
+        }
     }
 }
