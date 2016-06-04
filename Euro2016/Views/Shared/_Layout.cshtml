@@ -15,7 +15,7 @@
                 <div class="float-left">
                     <p class="site-title">
                         @using Euro2016.Helpers;
-                        @Html.ImageActionLink("Link Display Text", "Index","Home",null,null,"~/Images/UEFA_Euro_2016_logo.png")
+                        @Html.ImageActionLink("Link Display Text", "Index", "Home", null, null, "~/Images/UEFA_Euro_2016_logo.png")
                     </p>
                 </div>
                 <div class="float-right">
@@ -24,6 +24,7 @@
                     </section>
                     <nav>
                         <ul id="menu">
+                            <li>@Html.ActionLink("Présentation", "Index", "Home")</li>
                             <li>@Html.ActionLink("Résultats & Paris", "Index", "Home")</li>
                             <li>@Html.ActionLink("Classements", "Bets", "Home")</li>
                             <li>@Html.ActionLink("À propos de", "About", "Home")</li>
