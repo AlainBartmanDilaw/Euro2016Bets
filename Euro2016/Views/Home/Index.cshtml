@@ -15,57 +15,44 @@
 }
 
 @{
-    var db = Database.OpenConnectionString("DefaultConnection");
+    var db = Database.Open("DefaultConnection");
     var selectQueryString = "SELECT * FROM MatchsList ORDER BY Number";
  }
-<!DOCTYPE html>
 <html>
  <head>
    <title>Liste des matches</title>
-   <style>
-       table, th, td {
-         padding: 2px;
-       }
-    </style>
  </head>
  <body>
-   <h1>Liste des matches</h1>
-   <table>
+   <table class="round" style="width: 100%">
        <thead>
            <tr>
-             <th>Idt</th>
-             <th>Number</th>
-             <th>Groups_Cod</th>
-             <th>ScheduleDate</th>
-             <th>Phase_Idt</th>
-             <th>Phase_Lbl</th>
-             <th>Stadium_Name</th>
-             <th>Town_Name</th>
-             <th>Team_Home</th>
-             <th>Team_Home_Label</th>
-             <th>Score_Home</th>
-             <th>Team_Away</th>
-             <th>Team_Away_Label</th>
-             <th>Score_Away</th>
+             <th style="display:none;">Idt</th>
+             <th>N°</th>
+             <th>Groupe</th>
+             <th>Date</th>
+             <th>Phase</th>
+             <th>Stade</th>
+             <th>Ville</th>
+             <th>Equipe 1</th>
+             <th>Score</th>
+             <th>Score</th>
+             <th>Equipe 2</th>
            </tr>
        </thead>
        <tbody>
            @foreach(var row in db.Query(selectQueryString)){
-            <tr>
-                <td>@row.Idt</td>
+            <tr class="match">
+                <td style="display:none;">@row.Idt</td>
                 <td>@row.Number</td>
                 <td>@row.Groups_Cod</td>
-                <td>@row.ScheduleDate</td>
-                <td>@row.Phase_Idt</td>
+                <td class="Date">@row.ScheduleDate</td>
                 <td>@row.Phase_Lbl</td>
-                <td>@row.Stadium_Name</td>
-                <td>@row.Town_Name</td>
-                <td>@row.Team_Home</td>
-                <td>@row.Team_Home_Label</td>
-                <td>@row.Score_Home</td>
-                <td>@row.Team_Away</td>
-                <td>@row.Team_Away_Label</td>
-                <td>@row.Score_Away</td>
+                <td class="Lieu">@row.Stadium_Name</td>
+                <td class="Lieu">@row.Town_Name</td>
+                <td class="TeamHome">@row.Team_Home_Label</td>
+                <td class="ScoreHome">@row.Score_Home</td>
+                <td class="ScoreAway">@row.Score_Away</td>
+                <td class="TeamAway">@row.Team_Away_Label</td>
             </tr>
            }
        </tbody>
