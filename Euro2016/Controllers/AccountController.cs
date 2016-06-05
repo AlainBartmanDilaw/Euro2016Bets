@@ -80,7 +80,7 @@ namespace Euro2016.Controllers
                 // Tentative d'inscription de l'utilisateur
                 try
                 {
-                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password, new { EmailId = model.EmailId, Details = model.Details });
+                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password, propertyValues: new { eMail = model.eMail }, requireConfirmationToken: false);
                     WebSecurity.Login(model.UserName, model.Password);
                     return RedirectToAction("Index", "Home");
                 }
@@ -119,9 +119,9 @@ namespace Euro2016.Controllers
                 var resetLink = "<a href='" + Url.Action("ResetPassword", "Account", new { un = UserName, rt = token }, "http") + "'>Reset Password</a>";
                 //get user emailid
                 UsersContext db = new UsersContext();
-                var emailid = (from i in db.UserProfiles
-                               where i.UserName == UserName
-                               select i.EmailId).FirstOrDefault();
+                var emailid = (from i in db.Usr
+                               where i.Name == UserName
+                               select i.eMail).FirstOrDefault();
                 //send mail
                 string subject = "Password Reset Token";
                 string body = "<b>Please find the Password Reset Token</b><br/>" + resetLink; //edit it
@@ -352,12 +352,12 @@ namespace Euro2016.Controllers
                 // Insérer un nouvel utilisateur dans la base de données
                 using (UsersContext db = new UsersContext())
                 {
-                    UserProfile user = db.UserProfiles.FirstOrDefault(u => u.UserName.ToLower() == model.UserName.ToLower());
+                    Usr user = db.Usr.FirstOrDefault(u => u.Name.ToLower() == model.UserName.ToLower());
                     // Vérifier si l'utilisateur n'existe pas déjà
                     if (user == null)
                     {
                         // Insérer le nom dans la table des profils
-                        db.UserProfiles.Add(new UserProfile { UserName = model.UserName });
+                        db.Usr.Add(new Usr { Name = model.UserName });
                         db.SaveChanges();
 
                         OAuthWebSecurity.CreateOrUpdateAccount(provider, providerUserId, model.UserName);
@@ -509,9 +509,9 @@ namespace Euro2016.Controllers
             UsersContext db = new UsersContext();
             //TODO: Check the un and rt matching and then perform following
             //get userid of received username
-            var userid = (from i in db.UserProfiles
-                          where i.UserName == un
-                          select i.UserId).FirstOrDefault();
+            var userid = (from i in db.Usr
+                          where i.Name == un
+                          select i.Idt).FirstOrDefault();
             //check userid and token matches
             bool any = (from j in db.webpages_Membership
                         where (j.UserId == userid)
@@ -528,9 +528,9 @@ namespace Euro2016.Controllers
                 if (response == true)
                 {
                     //get user emailid to send password
-                    var emailid = (from i in db.UserProfiles
-                                   where i.UserName == un
-                                   select i.EmailId).FirstOrDefault();
+                    var emailid = (from i in db.Usr
+                                   where i.Name == un
+                                   select i.eMail).FirstOrDefault();
                     //send email
                     string subject = "New Password";
                     string body = "<b>Please find the New Password</b><br/>" + newpassword; //edit it

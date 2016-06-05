@@ -95,7 +95,7 @@ h5, h6 {
 ----------------------------------------------------------*/
 .content-wrapper {
     margin: 0 auto;
-    max-width: 960px;
+    max-width: 1600px;
 }
 
 #body {
@@ -135,12 +135,20 @@ footer {
     margin: 0;
 }
 
+.site-titlex
+{
+    color: #c8c8c8;
+    font-family: Rockwell, Consolas, "Courier New", Courier, monospace;
+    font-size: 2.3em;
+    margin: 0;
+}
+
 .site-title a, .site-title a:hover, .site-title a:active {
     background: none;
     color: #c8c8c8;
     outline: none;
     text-decoration: none;
-}
+}   
 
 
 /* login
@@ -253,17 +261,19 @@ section.feature {
 }
 
 /* ordered list */
-ol.round {
+ol.round
+{
     list-style-type: none;
     padding-left: 0;
 }
 
-    ol.round li {
-        margin: 25px 0;
-        padding-left: 45px;
-    }
+ol.round li
+{
+    margin: 25px 0;
+    padding-left: 45px;
+}
 
-        ol.round li.zero {
+ ol.round li.zero {
             background: url("../Images/orderedList0.png") no-repeat;
         }
 
@@ -303,12 +313,13 @@ ol.round {
             background: url("../Images/orderedList9.png") no-repeat;
         }
 
-        ol.round li.match
-{
-    color: #FF00FF;
-    table-layout: fixed;
-    empty-cells: show;
-}
+        ol.round tr.match
+        {
+            /*color: #FF00FF;*/
+            color: #0053ff;
+            table-layout: fixed;
+            empty-cells: show;
+        }
 
 /* content */
 article {
@@ -534,17 +545,16 @@ input[type="checkbox"].input-validation-error {
 
 /* tables
 ----------------------------------------------------------*/
-table {
+table
+{
     border-collapse: collapse;
     border-spacing: 0;
     margin-top: 0.75em;
-    border: 0 none;
 }
 
 th {
     font-size: 1.2em;
     text-align: left;
-    border: none 0px;
     padding-left: 0;
 }
 
@@ -586,7 +596,7 @@ th {
 
 td {
     padding: 0.25em 2em 0.25em 0em;
-    border: 0 none;
+    /*border: 0 none;*/
 }
 
 tr.pager td {
@@ -607,10 +617,12 @@ tr.pager td {
     }
 
     /* logo */
-    header .site-title {
+    header .site-title
+    {
         margin: 10px;
         text-align: center;
-        background-color:aquamarine;
+        /*width: 10px;
+        height: 10px;*/
     }
 
     /* login */
@@ -763,52 +775,99 @@ tr.pager td {
         }
 }
 
-td.Date, td.Lieu, td.Team
-, td.ScoreHome
-, td.ScoreAway
-, td.TeamHome
-, td.TeamAway
+tr.match
 {
-    text-align:center;
-    color: #5f5757; 
-    font-family:'Baskerville Old Face';
-    font-size: 1.2em;
-    padding-left: 15px;
-    padding-right: 15px;
+    table-layout: fixed;
+    empty-cells: show;
+    font-size: x-large;
 }
 
-td.TeamHome
-{
-    text-align: right;
-}
-
-td.TeamAway
+td
 {
     text-align: left;
+    color: #575757;
+    font-family: 'Baskerville Old Face';
+    padding-left: 0px;
+    padding-right: 0px;
+    column-width: auto;
+    /*vertical-align: central;*/
+    grid-column-align: center;
+    vertical-align: middle;
 }
 
-td.ScoreHome, td.ScoreAway
+    td.Groups
+    {
+        text-align: center;
+    }
+
+    td.Date
+    {
+        text-align: center;
+        /*column-width: 250px;*/
+        /*vertical-align:central;*/
+        grid-column-align: center;
+        vertical-align: middle;
+        /*grid-column-sizing:400px;*/   
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    td.Phase
+    {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    td.Stade
+    {
+        padding-left: 10px;
+    }
+
+    td.Ville
+    {
+    }
+
+    td.ImageHome, td.TeamHome, td.ScoreHome
+    {
+        text-align: right;
+    }
+
+    td.TeamHome
+    {
+        padding-right: 10px;
+    }
+
+    td.ScoreHome, td.ScoreHomeBet
+    {
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    td.ImageAway, td.ScoreAway, td.TeamAway
+    {
+        text-align: left;
+    }
+
+    td.ScoreAway, td.ScoreAwayBet
+    {
+        padding-left: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
+   }
+
+    td.TeamAway
+    {
+        padding-left: 10px;
+    }
+
+    td.ScoreHomeBet, td.ScoreAwayBet
+    {
+    }
+
+table, th, td
 {
-    width: 50px
+    border: 0 none;
+    border-bottom: 1px solid;
+    /*border: 1px solid black;*/
 }
-
-td.Date
-{
-    text-align: left;
-    column-width: 120px;
-}
-
-td.Score
-{
-    padding-left: 3px;
-    padding-right: 3px;
-}
-
-td.Lieu
-{
-    text-align: left;
-    padding-left: 30px;
-    column-width: 110px;
-    background-color: #a6dbed;
-}
-

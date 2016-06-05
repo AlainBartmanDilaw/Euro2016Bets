@@ -15,20 +15,19 @@ namespace Euro2016.Models
         {
         }
 
-        public DbSet<UserProfile> UserProfiles { get; set; }
+        public DbSet<Usr> Usr { get; set; }
         public DbSet<webpages_Membership> webpages_Membership { get; set; }
         public DbSet<Parameters> Parameters { get; set; }
     }
 
-    [Table("UserProfile")]
-    public class UserProfile
+    [Table("User")]
+    public class Usr
     {
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
-        public int UserId { get; set; }
-        public string UserName { get; set; }
-        public string EmailId { get; set; }
-        public string Details { get; set; }
+        public int Idt { get; set; }
+        public string Name { get; set; }
+        public string eMail { get; set; }
     }
 
     [Table("webpages_Membership")]
@@ -119,11 +118,8 @@ namespace Euro2016.Models
 
         [Required]
         [Display(Name = "Adresse Mail")]
-        public string EmailId { get; set; }
+        public string eMail { get; set; }
 
-        [Required]
-        [Display(Name = "Descriptions")]
-        public string Details { get; set; }
     }
 
     public class ExternalLogin

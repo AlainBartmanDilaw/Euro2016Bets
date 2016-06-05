@@ -1,9 +1,9 @@
 ﻿<!DOCTYPE html>
 <html lang="fr">
-    <head>
+<head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <meta charset="utf-8" />
-        <title>@ViewBag.Title - Mon application ASP.NET MVC</title>
+        <title>@ViewBag.Title - Euro 2016 Bets</title>
         <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
         <meta name="viewport" content="width=device-width" />
         @Styles.Render("~/Content/css")
@@ -21,12 +21,13 @@
                 <div class="float-right">
                     <section id="login">
                         @Html.Partial("_LoginPartial")
-                    </section>
+                    </section>  
                     <nav>
                         <ul id="menu">
                             <li>@Html.ActionLink("Présentation", "Index", "Home")</li>
-                            <li>@Html.ActionLink("Résultats & Paris", "Index", "Home")</li>
-                            <li>@Html.ActionLink("Classements", "Bets", "Home")</li>
+                            <li>@Html.ActionLink("Résultats", "Resultat", "Home")</li>
+                            <li>@Html.ActionLink("Vos Paris", "Bets", "Home")</li>
+                            <li>@Html.ActionLink("Classements", "Standings", "Home")</li>
                             <li>@Html.ActionLink("À propos de", "About", "Home")</li>
                             <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                         </ul>
@@ -43,7 +44,7 @@
         <footer>
             <div class="content-wrapper">
                 <div class="float-left">
-                    <p>&copy; @DateTime.Now.Year - Mon application ASP.NET MVC</p>
+                    <p>&copy; @DateTime.Now.Year - Euro 2016 Bets</p>
                 </div>
             </div>
         </footer>
