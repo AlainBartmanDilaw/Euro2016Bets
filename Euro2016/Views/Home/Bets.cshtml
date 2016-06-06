@@ -16,7 +16,7 @@
     <br />
     <br />
     @*begin2*@
-    @Html.InitCrudPopupsForGrid("DinnersGrid","DinnersGridCrud") 
+    @Html.InitCrudPopupsForGrid("MatchResultsGrid","DinnersGridCrud") 
 
     <div class="bar">
         <div style="float: right;">
@@ -25,27 +25,15 @@
         <button type="button" onclick="awe.open('createDinnersGrid')" class="awe-btn mbtn">Create</button>
     </div>
 
-    @(Html.Awe().Grid("DinnersGrid")
+    @(Html.Awe().Grid("D")
            .Url(Url.Action("GridGetItems", "DinnersGridCrud"))
            .Mod(o => o.ColumnsSelector().ColumnsAutohide())
            .Parent("txtSearch","search")
            .Height(350)
            .Columns(
-               new Column{Bind = "Id", Width = 55},
-               new Column{Bind = "Name"}.Mod(o => o.NoAutohide()),
-               new Column{Bind = "Date"},
-               new Column{Bind = "Chef.FirstName,Chef.LastName", ClientFormat = ".ChefName", Header = "Chef"},
-               new Column{ClientFormat = ".Meals", Header = "Meals"},
-               new Column{ClientFormat = GridUtils.EditFormatForGrid("DinnersGrid"), Width = 50}.Mod(o => o.Nohide()),
-               new Column{ClientFormat = GridUtils.DeleteFormatForGrid("DinnersGrid"), Width = 50}.Mod(o => o.Nohide())))
+               new Column{Bind = "Idt", Width = 55},
+               new Column{Bind = "Number"}.Mod(o => o.NoAutohide()),
+               new Column{Bind = "ScheduleDate"},
     @*end2*@
 
-    <div class="code tabs">
-        <div data-caption="view">
-            @Html.Source("Home/Index.cshtml", 2) 
-        </div>
-        <div data-caption="controller">
-            @Html.Csource("Demos/Grid/DinnersGridCrudController.cs") 
-        </div>
-    </div>
     <br />
