@@ -1,7 +1,4 @@
-﻿@{
-    ViewBag.Title = "Résultats...";
-}
-@section featured {
+﻿@section featured {
     <section class="featured">
         <div class="content-wrapper">
             <hgroup class="title">
@@ -14,53 +11,41 @@
     </section>
 }
 
-@{
-    var db = Database.Open("DefaultConnection");
-    var selectQueryString = "SELECT * FROM UsrMatch where Usr_Name = '" + HttpContext.Current.User.Identity.Name + "' ORDER BY Number";
- }
-<html>
- <head>
-   <title>Liste des matches</title>
- </head>
- <body>
-   <table class="round" style="width: 100%">
-       <thead>
-           <tr>
-             <th style="display:none;">Idt</th>
-             <th style="text-align:center">N°</th>
-             <th>Groupe</th>
-             <th style="text-align:center">Date</th>
-             <th>Phase</th>
-             <th>Stade</th>
-             <th>Ville</th>
-             <th></th>
-             <th></th>
-             <th></th>
-             <th></th>
-             <th></th>
-             <th></th>
-           </tr>
-       </thead>
-       <tbody>
-           @using Euro2016.Helpers;
-           @foreach(var row in db.Query(selectQueryString)){
-            <tr class="match">
-                <td style="display:none;">@row.Matchs_Idt</td>
-                <td class="Number">@row.Number</td>
-                <td class="Groups">@row.Groups_Cod</td>
-                <td class="Date">@row.ScheduleDate</td>
-                <td class="Phase">@row.Phase_Lbl</td>   
-                <td class="Stade">@row.Stadium_Name</td>
-                <td class="Ville">@row.Town_Name</td>
-                <td class="TeamHome">@row.Team_Home_Label</td>
-                <td class="ImageHome"><img src="@row.ImageHome" /></td>
-                <td contenteditable="true" class="ScoreHomeBet">@row.HomeScore</td>
-                <td contenteditable="true" class="ScoreAwayBet">@row.AwayScore</td>
-                <td class="ImageAway"><img src="@row.ImageAway"/></td>
-                <td class="TeamAway">@row.Team_Away_Label</td>
-            </tr>
-           }
-       </tbody>
-   </table>
- </body>
-</html>
+    <br />
+    Grid and PopupForm used for CRUD operations, more details here: <a href="@Url.Action("Index", "GridCrudDemo")">Grid Crud Demo</a>
+    <br />
+    <br />
+    @*begin2*@
+    @Html.InitCrudPopupsForGrid("DinnersGrid","DinnersGridCrud") 
+
+    <div class="bar">
+        <div style="float: right;">
+            @Html.Awe().TextBox("txtSearch").Placeholder("search...").CssClass("searchtxt") 
+        </div>
+        <button type="button" onclick="awe.open('createDinnersGrid')" class="awe-btn mbtn">Create</button>
+    </div>
+
+    @(Html.Awe().Grid("DinnersGrid")
+           .Url(Url.Action("GridGetItems", "DinnersGridCrud"))
+           .Mod(o => o.ColumnsSelector().ColumnsAutohide())
+           .Parent("txtSearch","search")
+           .Height(350)
+           .Columns(
+               new Column{Bind = "Id", Width = 55},
+               new Column{Bind = "Name"}.Mod(o => o.NoAutohide()),
+               new Column{Bind = "Date"},
+               new Column{Bind = "Chef.FirstName,Chef.LastName", ClientFormat = ".ChefName", Header = "Chef"},
+               new Column{ClientFormat = ".Meals", Header = "Meals"},
+               new Column{ClientFormat = GridUtils.EditFormatForGrid("DinnersGrid"), Width = 50}.Mod(o => o.Nohide()),
+               new Column{ClientFormat = GridUtils.DeleteFormatForGrid("DinnersGrid"), Width = 50}.Mod(o => o.Nohide())))
+    @*end2*@
+
+    <div class="code tabs">
+        <div data-caption="view">
+            @Html.Source("Home/Index.cshtml", 2) 
+        </div>
+        <div data-caption="controller">
+            @Html.Csource("Demos/Grid/DinnersGridCrudController.cs") 
+        </div>
+    </div>
+    <br />
