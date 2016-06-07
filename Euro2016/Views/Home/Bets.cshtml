@@ -16,51 +16,85 @@
 
 @{
     var db = Database.Open("DefaultConnection");
-    var selectQueryString = "SELECT * FROM UsrMatch where Usr_Name = '" + HttpContext.Current.User.Identity.Name + "' ORDER BY Number";
+    var sqlFinished = "SELECT * FROM UsrMatch where Usr_Name = '" + HttpContext.Current.User.Identity.Name + "' and Finished = 1 ORDER BY Number";
+    var sqlCurrent = "SELECT * FROM UsrMatch where Usr_Name = '" + HttpContext.Current.User.Identity.Name + "' and Finished = 0 ORDER BY Number";
  }
+
+<script type="text/javascript">
+
+function handleClick(evt) {
+  var node = evt.target || evt.srcElement;
+  if (node.name == 'Ok !')
+  {
+    node.value = "Posted";
+  }
+}
+
+</script>
+
 <html>
- <head>
-   <title>Liste des matches</title>
- </head>
- <body>
-   <table class="round" style="width: 100%">
-       <thead>
-           <tr>
-             <th style="display:none;">Idt</th>
-             <th style="text-align:center">N°</th>
-             <th>Groupe</th>
-             <th style="text-align:center">Date</th>
-             <th>Phase</th>
-             <th>Stade</th>
-             <th>Ville</th>
-             <th></th>
-             <th></th>
-             <th></th>
-             <th></th>
-             <th></th>
-             <th></th>
-           </tr>
-       </thead>
-       <tbody>
-           @using Euro2016.Helpers;
-           @foreach(var row in db.Query(selectQueryString)){
-            <tr class="match">
-                <td style="display:none;">@row.Matchs_Idt</td>
-                <td class="Number">@row.Number</td>
-                <td class="Groups">@row.Groups_Cod</td>
-                <td class="Date">@row.ScheduleDate</td>
-                <td class="Phase">@row.Phase_Lbl</td>   
-                <td class="Stade">@row.Stadium_Name</td>
-                <td class="Ville">@row.Town_Name</td>
-                <td class="TeamHome">@row.Team_Home_Label</td>
-                <td class="ImageHome"><img src="@row.ImageHome" /></td>
-                <td contenteditable="true" class="ScoreHomeBet">@row.HomeScore</td>
-                <td contenteditable="true" class="ScoreAwayBet">@row.AwayScore</td>
-                <td class="ImageAway"><img src="@row.ImageAway"/></td>
-                <td class="TeamAway">@row.Team_Away_Label</td>
-            </tr>
-           }
-       </tbody>
-   </table>
+    <head>
+        <title>Liste des matches</title>
+    </head>
+    <body>
+        <table class="round" style="width: 100%" onclick="handleClick(event);">
+            <thead>
+                <tr>
+                    <th style="display:none;">Idt</th>
+                    <th style="text-align:center">N°</th>
+                    <th>Groupe</th>
+                    <th style="text-align:center">Date</th>
+                    <th>Phase</th>
+                    <th>Stade</th>
+                    <th>Ville</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @using Euro2016.Helpers;
+                @foreach (var row in db.Query(sqlFinished))
+                {
+                <tr class="match">
+                    <td style="display:none;">@row.Matchs_Idt</td>
+                    <td class="Number">@row.Number</td>
+                    <td class="Groups">@row.Groups_Cod</td>
+                    <td class="Date">@row.ScheduleDate</td>
+                    <td class="Phase">@row.Phase_Lbl</td>   
+                    <td class="Stade">@row.Stadium_Name</td>
+                    <td class="Ville">@row.Town_Name</td>
+                    <td class="TeamHome">@row.Team_Home_Label</td>
+                    <td class="ImageHome"><img src="@row.ImageHome" /></td>
+                    <td class="ScoreHomeBet"><style="width:40px">@row.HomeScore</style></td>
+                    <td class="ScoreAwayBet"><style="width:40px">@row.AwayScore</style></td>
+                    <td class="ImageAway"><img src="@row.ImageAway"/></td>
+                    <td class="TeamAway">@row.Team_Away_Label</td>
+                </tr>
+                }
+                @foreach (var row in db.Query(sqlCurrent))
+                {
+                <tr class="match">
+                    <td style="display:none;">@row.Matchs_Idt</td>
+                    <td class="Number">@row.Number</td>
+                    <td class="Groups">@row.Groups_Cod</td>
+                    <td class="Date">@row.ScheduleDate</td>
+                    <td class="Phase">@row.Phase_Lbl</td>   
+                    <td class="Stade">@row.Stadium_Name</td>
+                    <td class="Ville">@row.Town_Name</td>
+                    <td class="TeamHome">@row.Team_Home_Label</td>
+                    <td class="ImageHome"><img src="@row.ImageHome" /></td>
+                    <td class="ScoreHomeBet"><input type="text" style="width:40px" maxlength="2" size="2" name="HomeScore" value="@row.HomeScore"/></td>
+                    <td class="ScoreAwayBet"><input type="text" style="width:40px" maxlength="2" size="2" name="AwayScore" value="@row.AwayScore"/></td>
+                    <td class="ImageAway"><img src="@row.ImageAway"/></td>
+                    <td class="TeamAway">@row.Team_Away_Label</td>
+                    <td><form name="@row.Matchs_Idt" action="#" ><input type="submit" value="Ok !"></form></td>
+                </tr>
+                }
+            </tbody>
+        </table>
  </body>
 </html>

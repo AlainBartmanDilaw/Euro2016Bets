@@ -837,21 +837,21 @@ td
         padding-right: 10px;
     }
 
-    td.ScoreHome, td.ScoreHomeBet
-    {
-        padding-right: 10px;
-        padding-left: 10px;
-        padding-right: 10px;
-    }
-
     td.ImageAway, td.ScoreAway, td.TeamAway
     {
         text-align: left;
     }
 
+    td.ScoreHome, td.ScoreHomeBet
+    {
+        text-align: center;
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+
     td.ScoreAway, td.ScoreAwayBet
     {
-        padding-left: 10px;
+        text-align: center;
         padding-left: 10px;
         padding-right: 10px;
    }
@@ -861,8 +861,10 @@ td
         padding-left: 10px;
     }
 
-    td.ScoreHomeBet, td.ScoreAwayBet
+    td.ScoreAwayBet, td.ScoreHomeBet
     {
+        /*column-width: 40px;*/
+        /*align-content: center;*/
     }
 
 table, th, td
