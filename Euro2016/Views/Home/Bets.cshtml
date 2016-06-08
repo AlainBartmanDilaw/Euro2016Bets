@@ -1,7 +1,4 @@
-﻿@{
-    ViewBag.Title = "Résultats...";
-}
-@section featured {
+﻿@section featured {
     <section class="featured">
         <div class="content-wrapper">
             <hgroup class="title">
@@ -14,6 +11,7 @@
     </section>
 }
 
+<<<<<<< HEAD
 @{
     var db = Database.Open("DefaultConnection");
     var sqlFinished = "SELECT * FROM UsrMatch where Usr_Name = '" + HttpContext.Current.User.Identity.Name + "' and Finished = 1 ORDER BY Number";
@@ -98,3 +96,31 @@ function handleClick(evt) {
         </table>
  </body>
 </html>
+=======
+    <br />
+    Grid and PopupForm used for CRUD operations, more details here: <a href="@Url.Action("Index", "GridCrudDemo")">Grid Crud Demo</a>
+    <br />
+    <br />
+    @*begin2*@
+    @Html.InitCrudPopupsForGrid("MatchResultsGrid","DinnersGridCrud") 
+
+    <div class="bar">
+        <div style="float: right;">
+            @Html.Awe().TextBox("txtSearch").Placeholder("search...").CssClass("searchtxt") 
+        </div>
+        <button type="button" onclick="awe.open('createDinnersGrid')" class="awe-btn mbtn">Create</button>
+    </div>
+
+    @(Html.Awe().Grid("D")
+           .Url(Url.Action("GridGetItems", "DinnersGridCrud"))
+           .Mod(o => o.ColumnsSelector().ColumnsAutohide())
+           .Parent("txtSearch","search")
+           .Height(350)
+           .Columns(
+               new Column{Bind = "Idt", Width = 55},
+               new Column{Bind = "Number"}.Mod(o => o.NoAutohide()),
+               new Column{Bind = "ScheduleDate"},
+    @*end2*@
+
+    <br />
+>>>>>>> origin/old-master
