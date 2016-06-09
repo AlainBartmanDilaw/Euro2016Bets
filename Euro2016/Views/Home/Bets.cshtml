@@ -19,28 +19,36 @@
     var sqlFinished = "SELECT * FROM UsrMatch where Usr_Name = '" + HttpContext.Current.User.Identity.Name + "' and Finished = 1 ORDER BY Number";
     var sqlCurrent = "SELECT * FROM UsrMatch where Usr_Name = '" + HttpContext.Current.User.Identity.Name + "' and Finished = 0 ORDER BY Number";
  }
-
-<script type="text/javascript">
-
-function handleClick(evt) {
-  var node = evt.target || evt.srcElement;
-  if (node.name == 'Ok !')
-  {
-    node.value = "Posted";
-  }
-}
-
-</script>
-
 <html>
-    <head>
+    <head runat="server">
         <title>Liste des matches</title>
+
+    <style>
+        ValidButton
+        {
+            color: red;
+            margin: 5px;
+            cursor: pointer;
+        }
+        ValidButton:hover
+        {
+            background: yellow;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
     </head>
     <body>
-        <table class="round" style="width: 100%" onclick="handleClick(event);">
+        
+        <form id="Results" runat="server">
+        <div>
+        <table id="MatchsResults" class="round" style="width: 100%"    >
             <thead>
                 <tr>
                     <th style="display:none;">Idt</th>
+                    <th style="display:none;">Usr_Idt</th>
+                    <th style="display:none;">Usr_Name</th>
                     <th style="text-align:center">N°</th>
                     <th>Groupe</th>
                     <th style="text-align:center">Date</th>
@@ -61,6 +69,8 @@ function handleClick(evt) {
                 {
                 <tr class="match">
                     <td style="display:none;">@row.Matchs_Idt</td>
+                    <td style="display:none;">@row.Usr_Idt</td>
+                    <td style="display:none;">@row.Usr_Name</td>
                     <td class="Number">@row.Number</td>
                     <td class="Groups">@row.Groups_Cod</td>
                     <td class="Date">@row.ScheduleDate</td>
@@ -69,8 +79,8 @@ function handleClick(evt) {
                     <td class="Ville">@row.Town_Name</td>
                     <td class="TeamHome">@row.Team_Home_Label</td>
                     <td class="ImageHome"><img src="@row.ImageHome" /></td>
-                    <td class="ScoreHomeBet"><style="width:40px">@row.HomeScore</style></td>
-                    <td class="ScoreAwayBet"><style="width:40px">@row.AwayScore</style></td>
+                    <td class="ScoreHome">@row.HomeScore</td>
+                    <td class="ScoreAway">@row.AwayScore</td>
                     <td class="ImageAway"><img src="@row.ImageAway"/></td>
                     <td class="TeamAway">@row.Team_Away_Label</td>
                 </tr>
@@ -79,6 +89,8 @@ function handleClick(evt) {
                 {
                 <tr class="match">
                     <td style="display:none;">@row.Matchs_Idt</td>
+                    <td style="display:none;">@row.Usr_Idt</td>
+                    <td style="display:none;">@row.Usr_Name</td>
                     <td class="Number">@row.Number</td>
                     <td class="Groups">@row.Groups_Cod</td>
                     <td class="Date">@row.ScheduleDate</td>
@@ -87,14 +99,59 @@ function handleClick(evt) {
                     <td class="Ville">@row.Town_Name</td>
                     <td class="TeamHome">@row.Team_Home_Label</td>
                     <td class="ImageHome"><img src="@row.ImageHome" /></td>
-                    <td class="ScoreHomeBet"><input type="text" style="width:40px" maxlength="2" size="2" name="HomeScore" value="@row.HomeScore"/></td>
-                    <td class="ScoreAwayBet"><input type="text" style="width:40px" maxlength="2" size="2" name="AwayScore" value="@row.AwayScore"/></td>
+                    <!-- <td class="ScoreHomeBet"><input type="text" style="width:40px" maxlength="2" size="2" id="HomeScore"@row.Matchs_Idt value="@row.HomeScore"/></td>
+                    <td class="ScoreAwayBet"><input type="text" style="width:40px" maxlength="2" size="2" id="AwayScore"@row.Matchs_Idt value="@row.AwayScore"/></td> -->
+                    <td class="ScoreHomeBet"><div contenteditable="true" style="background-color:lightgrey" id="HomeScore">@row.HomeScore</div></td>
+                    <td class="ScoreAwayBet"><div contenteditable="true" style="background-color:lightgrey" id="AwayScore">@row.AwayScore</div></td>
                     <td class="ImageAway"><img src="@row.ImageAway"/></td>
                     <td class="TeamAway">@row.Team_Away_Label</td>
-                    <td><form name="@row.Matchs_Idt" action="#" ><input type="submit" value="Ok !"></form></td>
+                    <td class="ValidButton"><ValidButton>Set</ValidButton></td>
                 </tr>
                 }
             </tbody>
         </table>
+        </div>
+        </form>
  </body>
+
+ <script>
+     $("ValidButton").click(function () {
+         var $row = $(this).closest("tr"),       // Finds the closest row <tr> 
+             $tds = $row.find("td");             // Finds all children <td> elements
+         $i = 0;
+         var HomeScore = "";
+         var AwayScore = "";
+         var MatchsIdt = "";
+         var UsrIdt = "";
+         $.each($tds, function () {               // Visits every single <td> element
+             console.log($i + " " + $(this).text());
+             if ($i == 0) MatchsIdt = $(this).text();
+             if ($i == 1) UsrIdt = $(this).text();
+             if ($i == 11) HomeScore = $(this).text();
+             if ($i == 12) AwayScore = $(this).text();
+             $i++;
+         });
+         //var HomeScore = $('select[id="HomeScore"]').val();
+         console.log("USer Idt   => " + UsrIdt);
+         console.log("Match Idt  => " + MatchsIdt);
+         console.log("Score Home => " + HomeScore);
+         console.log("Score Away => " + AwayScore);
+         $(this).text("Upd.");
+     });
+
+     $('td[contenteditable=true]').blur(function () {
+         $(this).parent('tr').find('button').removeAttr('disabled');
+
+     });
+
+     $('td').on({
+         'dblclick': function () {
+             $(this).prop('contenteditable', true);
+         },
+         'blur': function () {
+             $(this).prop('contenteditable', false);
+         }
+     });
+</script>
+
 </html>
