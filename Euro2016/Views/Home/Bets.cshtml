@@ -19,6 +19,9 @@
     var sqlFinished = "SELECT * FROM UsrMatch where Usr_Name = '" + HttpContext.Current.User.Identity.Name + "' and Finished = 1 ORDER BY Number";
     var sqlCurrent = "SELECT * FROM UsrMatch where Usr_Name = '" + HttpContext.Current.User.Identity.Name + "' and Finished = 0 ORDER BY Number";
  }
+
+<%@ Page Language="C#" AutoEventWireup="true" CodeFile="PostUsrMatch.cs" Inherits="PostUsrMatch" %>
+
 <html>
     <head runat="server">
         <title>Liste des matches</title>
@@ -36,6 +39,7 @@
         }
     </style>
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
     </head>
@@ -123,20 +127,51 @@
          var AwayScore = "";
          var MatchsIdt = "";
          var UsrIdt = "";
+         var UsrName = "";
          $.each($tds, function () {               // Visits every single <td> element
              console.log($i + " " + $(this).text());
-             if ($i == 0) MatchsIdt = $(this).text();
-             if ($i == 1) UsrIdt = $(this).text();
-             if ($i == 11) HomeScore = $(this).text();
-             if ($i == 12) AwayScore = $(this).text();
+             switch ($i) {
+                 case 0:
+                     MatchsIdt = $(this).text();
+                     break;
+                 case 1:
+                     UsrIdt = $(this).text();
+                     break;
+                 case 2:
+                     UsrName = $(this).text();
+                     break;
+                 case 11:
+                     HomeScore = $(this).text();
+                     break;
+                 case 12:
+                     AwayScore = $(this).text();
+                     break;
+             }
              $i++;
          });
          //var HomeScore = $('select[id="HomeScore"]').val();
-         console.log("USer Idt   => " + UsrIdt);
          console.log("Match Idt  => " + MatchsIdt);
+         console.log("User Name  => " + UsrName + "("+ UsrIdt + ")");
          console.log("Score Home => " + HomeScore);
          console.log("Score Away => " + AwayScore);
-         $(this).text("Upd.");
+
+         $.ajax({
+             type: 'POST',
+             contentType: "application/json; charset=utf-8",
+             url: '_PostUsrMatch.aspx/Insert_Data',
+             data: "{'pMatchsIdt':'" + MatchsIdt + "','pUsrName':'" + UsrName + "','pScoreHome':'" + HomeScore + "','pScoreAway':'" + AwayScore + "'}",
+             async: false,
+             success: function (response) {
+                 //$('#txtName').val(''); $('#txtAge').val(''); $('#txtSex').val('');
+                 alert("Record saved successfully..!!");
+             },
+
+             error: function (response) {
+                 alert("Error" + response.error());
+             }
+         });
+
+         $(this).text("Upd");
      });
 
      $('td[contenteditable=true]').blur(function () {
@@ -152,6 +187,32 @@
              $(this).prop('contenteditable', false);
          }
      });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnsubmit').click(function () {
+            var name = $('#txtName').val();
+            var age = $('#txtAge').val();
+            var sex = $('#txtSex').val();
+
+            $.ajax({
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                url: 'Default.aspx/Insert_Data',
+                data: "{'name':'" + name + "','age':'" + age + "','sex':'" + sex + "'}",
+                async: false,
+                success: function (response) {
+                    $('#txtName').val(''); $('#txtAge').val(''); $('#txtSex').val('');
+                    alert("Record saved successfully..!!");
+                },
+
+                error: function () {
+                    alert("Error");
+                }
+            });
+        });
+    });
 </script>
 
 </html>

@@ -1,0 +1,66 @@
+﻿@{
+    ViewBag.Title = "Résultats...";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Title</h1>
+                <h2>@ViewBag.Message</h2>
+            </hgroup>
+            <p>
+            </p>
+        </div>
+    </section>
+}
+
+@{
+    var db = Database.Open("DefaultConnection");
+    var selectQueryString = "SELECT * FROM MatchsList ORDER BY Number";
+ }
+<html>
+ <head>
+   <title>Liste des matches</title>
+ </head>
+ <body>
+   <table class="round" style="width: 100%">
+       <thead>
+           <tr>
+             <th style="display:none;">Idt</th>
+             <th style="text-align:center">N°</th>
+             <th>Groupe</th>
+             <th style="text-align:center">Date</th>
+             <th>Phase</th>
+             <th>Stade</th>
+             <th>Ville</th>
+             <th></th>
+             <th></th>
+             <th></th>
+             <th></th>
+             <th></th>
+             <th></th>
+           </tr>
+       </thead>
+       <tbody>
+           @using Euro2016.Helpers;
+           @foreach(var row in db.Query(selectQueryString)){
+            <tr class="match">
+                <td style="display:none;">@row.Idt</td>
+                <td class="Number">@row.Number</td>
+                <td class="Groups">@row.Groups_Cod</td>
+                <td class="Date">@row.ScheduleDate</td>
+                <td class="Phase">@row.Phase_Lbl</td>   
+                <td class="Stade">@row.Stadium_Name</td>
+                <td class="Ville">@row.Town_Name</td>
+                <td class="TeamHome">@row.Team_Home_Label</td>
+                <td class="ImageHome"><img src="@row.ImageHome" /></td>
+                <td class="ScoreHome">@row.Score_Home</td>
+                <td class="ScoreAway">@row.Score_Away</td>
+                <td class="ImageAway"><img src="@row.ImageAway"/></td>
+                <td class="TeamAway">@row.Team_Away_Label</td>
+            </tr>
+           }
+       </tbody>
+   </table>
+ </body>
+</html>

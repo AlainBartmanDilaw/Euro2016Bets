@@ -35,5 +35,19 @@ namespace Euro2016.Controllers
 
             return View();
         }
+
+        public ActionResult Resultats()
+        {
+            ViewBag.Message = "Résultats";
+
+            return View();
+        }
+
+        public ActionResult Presentation()
+        {
+            ViewBag.Message = "Présentation des paris sportifs entre amis...";
+
+            return View();
+        }
     }
 }
